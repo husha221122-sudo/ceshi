@@ -2046,5 +2046,32 @@ window.addEventListener('scroll',()=>{
     });
 })();
 </script>
+    <script>
+/* ── 导航栏滚动隐藏/显示 ── */
+let lastScrollTop = 0;
+let isNavHidden = false;
+
+window.addEventListener('scroll', function() {
+    const nav = document.querySelector('nav');
+    if (!nav) return;
+    
+    let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+    
+    if (currentScroll > lastScrollTop && currentScroll > 50) {
+        if (!isNavHidden) {
+            nav.classList.add('nav-hidden');
+            isNavHidden = true;
+        }
+    }
+    else {
+        if (isNavHidden) {
+            nav.classList.remove('nav-hidden');
+            isNavHidden = false;
+        }
+    }
+    
+    lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+}, false);
+</script>
 </body>
 </html>
