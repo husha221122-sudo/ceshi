@@ -252,31 +252,26 @@
         #cursor-trail { position:fixed;top:0;left:0;width:36px;height:36px;border:1px solid rgba(0,229,255,0.4);border-radius:50%;pointer-events:none;z-index:99998;transform:translate(-50%,-50%);transition:width .3s,height .3s,background .3s; }
         body.hovering #custom-cursor { width:0;height:0; }
         body.hovering #cursor-trail { width:60px;height:60px;background:rgba(0,229,255,0.1);border-color:var(--cyan); }
-
-        #glCanvas { position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none; }
-
+#glCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: #000;
+    display: block;
+}
         #main-page,#detail-page,#protect-page,#agent-page,#industry-page,#about-page { position:relative;z-index:1; }
 
-         nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 70px;
-            background: linear-gradient(135deg, rgba(5, 15, 25, 0.95), rgba(0, 30, 60, 0.9));
-            border-bottom: 1px solid rgba(0, 229, 255, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 30px;
-            z-index: 100;
-            transition: transform 0.3s ease;
-            transform: translateY(0);
-        }
-        
-        nav.nav-hidden {
-            transform: translateY(-100%);
-        }
+        nav { position:fixed;top:0;width:100%;z-index:100;background:rgba(5,10,15,0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(0,229,255,0.2);padding:0 40px;display:flex;align-items:center;justify-content:space-between;height:70px;transition:transform .4s cubic-bezier(.16,1,.3,1); }
+        nav.nav-hidden { transform:translateY(-100%); }
+        .nav-logo { display:flex;align-items:center;gap:12px; }
+        .nav-logo img { height:52px;filter:url(#remove-black) brightness(1.1); }
+        .nav-links { display:flex;gap:6px;list-style:none; }
+        .nav-links a { color:#90caf9;text-decoration:none;font-size:14px;padding:6px 14px;border-radius:20px;transition:all .3s; }
+        .nav-links a:hover { color:var(--cyan);background:rgba(0,229,255,0.1); }
+.nav-activity-btn {
             display:inline-flex;align-items:center;gap:6px;
             background:linear-gradient(135deg,rgba(255,215,64,0.18),rgba(255,100,0,0.12));
             border:1px solid rgba(255,215,64,0.5);
@@ -722,13 +717,7 @@
             nav{padding:0 24px;}
         }
       @media(max-width:768px){
-    /* 导航优化 - 和电脑一样 */
-    nav{padding:0 12px;height:auto;display:flex;align-items:center;flex-wrap:wrap;}
-    .nav-logo img{height:35px;}
-    .nav-links{display:flex;gap:4px;flex-wrap:wrap;list-style:none;}
-    .nav-links a{font-size:11px;padding:6px 10px;color:#90caf9;}
-    .nav-activity-btn{font-size:11px;padding:6px 10px;}
-    .back-btn{font-size:.85rem;padding:6px 16px;}
+   
     /* Hero区域*/
     #hero{padding:0 20px;}
     .hero-logo{width:180px;}
@@ -979,6 +968,41 @@
     .video-label{padding:10px 16px;font-size:.65rem;}
     #about-page .stats-bar{grid-template-columns:repeat(2,1fr)!important;}
 }
+/* ══ Hamburger 按钮 ══ */
+.hamburger-btn { display:none;width:44px;height:44px;background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.25);border-radius:12px;cursor:pointer;flex-direction:column;align-items:center;justify-content:center;gap:5px;transition:all .3s;flex-shrink:0; }
+.hamburger-btn span { display:block;width:20px;height:2px;background:var(--cyan);border-radius:2px;transition:all .3s; }
+.hamburger-btn.active span:nth-child(1) { transform:rotate(45deg) translate(5px,5px); }
+.hamburger-btn.active span:nth-child(2) { opacity:0; }
+.hamburger-btn.active span:nth-child(3) { transform:rotate(-45deg) translate(5px,-5px); }
+
+/* ══ 侧滑抽屉 ══ */
+.mobile-drawer-overlay { display:none;position:fixed;inset:0;z-index:150;background:rgba(0,0,0,0.6);backdrop-filter:blur(6px);opacity:0;transition:opacity .3s; }
+.mobile-drawer-overlay.open { display:block;opacity:1; }
+.mobile-drawer { position:fixed;top:0;right:-320px;width:300px;max-width:85vw;height:100vh;z-index:151;background:linear-gradient(180deg,rgba(5,15,30,0.99),rgba(3,10,20,0.99));border-left:1px solid rgba(0,229,255,0.2);padding:80px 24px 40px;transition:right .4s cubic-bezier(.16,1,.3,1);overflow-y:auto;box-shadow:-10px 0 60px rgba(0,0,0,0.5); }
+.mobile-drawer.open { right:0; }
+.mobile-drawer .drawer-close { position:absolute;top:18px;right:18px;width:44px;height:44px;background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.25);border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--cyan);font-size:1.2rem;transition:all .3s; }
+.drawer-nav-links { list-style:none;display:flex;flex-direction:column;gap:4px;margin-bottom:24px; }
+.drawer-nav-links a { display:flex;align-items:center;gap:12px;color:rgba(224,247,250,0.8);text-decoration:none;font-size:.95rem;padding:14px 16px;border-radius:12px;transition:all .3s;letter-spacing:1px;min-height:44px; }
+.drawer-nav-links a:active { background:rgba(0,229,255,0.1);color:var(--cyan); }
+.drawer-nav-links .drawer-icon { font-size:1.1rem;width:24px;text-align:center; }
+.drawer-divider { height:1px;background:linear-gradient(90deg,transparent,rgba(0,229,255,0.2),transparent);margin:8px 0 16px; }
+.drawer-activity-btn { display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;border-radius:12px;background:linear-gradient(135deg,rgba(255,215,64,0.15),rgba(255,100,0,0.1));border:1px solid rgba(255,215,64,0.4);color:var(--gold);font-size:.95rem;font-weight:700;letter-spacing:1px;cursor:pointer;transition:all .3s;margin-bottom:16px;min-height:44px; }
+
+/* ══ 悬浮底部按钮（移动端）══ */
+.mobile-fab { display:none;position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:90;background:linear-gradient(135deg,var(--cyan),#006d7c);color:#000;font-weight:800;font-size:.95rem;padding:14px 36px;border-radius:40px;border:none;cursor:pointer;box-shadow:0 4px 30px rgba(0,229,255,0.5);letter-spacing:1px;white-space:nowrap;transition:all .3s;text-decoration:none; }
+.mobile-fab:active { transform:translateX(-50%) scale(0.95); }
+
+/* ══ 响应式断点 ══ */
+@media(max-width:900px){
+    .nav-links { display:none!important; }
+    .hamburger-btn { display:flex!important; }
+    .mobile-fab { display:flex;align-items:center;justify-content:center; }
+}
+@media(min-width:901px){
+    .hamburger-btn { display:none!important; }
+    .mobile-drawer,.mobile-drawer-overlay { display:none!important; }
+    .nav-links { display:flex!important; }
+}
     </style>
 </head>
 <body>
@@ -995,7 +1019,9 @@
 
 <canvas id="glCanvas"></canvas>
 
-<!-- ══ 导航栏 ══ -->
+
+
+<!-- ══ NAV ══ -->
 <nav id="nav-main">
     <div class="nav-logo"><img src="logo.png" alt="Tiger Shark Logo"></div>
     <ul class="nav-links">
@@ -1005,46 +1031,34 @@
         <li><a href="#contact">Contacto</a></li>
         <li><a href="#links">Enlaces</a></li>
         <li><a href="#recruit">Únete</a></li>
-        <li>
-            <button class="nav-activity-btn" onclick="showActivityPage()">
-                🏆 Actividad
-            </button>
-        </li>
     </ul>
-</nav>
-<nav id="nav-activity">
-    <div class="nav-logo"><img src="logo.png" alt="Tiger Shark Logo"></div>
-    <button class="back-btn" onclick="showMainPage()">← Volver</button>
-</nav>
-<nav id="nav-detail"><div class="nav-logo"><img src="logo.png" alt="Tiger Shark Logo"></div><button class="back-btn" onclick="showMainPage()">← Volver</button></nav>
-<nav id="nav-activity">
-    <div class="nav-logo"><img src="logo.png" alt="Tiger Shark Logo"></div>
-    <button class="back-btn" onclick="showMainPage()">← Volver</button>
-</nav>
-<nav id="nav-protect"><div class="nav-logo"><img src="logo.png" alt="Tiger Shark Logo"></div><button class="back-btn" onclick="showMainPage()">← Volver</button></nav>
-<nav id="nav-activity">
-    <div class="nav-logo"><img src="logo.png" alt="Tiger Shark Logo"></div>
-    <button class="back-btn" onclick="showMainPage()">← Volver</button>
-</nav>
-<nav id="nav-agent"><div class="nav-logo"><img src="logo.png" alt="Tiger Shark Logo"></div><button class="back-btn" onclick="showMainPage()">← Volver</button></nav>
-<nav id="nav-activity">
-    <div class="nav-logo"><img src="logo.png" alt="Tiger Shark Logo"></div>
-    <button class="back-btn" onclick="showMainPage()">← Volver</button>
-</nav>
-<nav id="nav-industry"><div class="nav-logo"><img src="logo.png" alt="Tiger Shark Logo"></div><button class="back-btn" onclick="showMainPage()">← Volver</button></nav>
-<nav id="nav-activity">
-    <div class="nav-logo"><img src="logo.png" alt="Tiger Shark Logo"></div>
-    <button class="back-btn" onclick="showMainPage()">← Volver</button>
-</nav>
-<nav id="nav-about">
-    <div class="nav-logo"><img src="logo.png" alt="Tiger Shark Logo"></div>
-    <button class="back-btn" onclick="showMainPage()">← Volver</button>
-</nav>
-<nav id="nav-activity">
-    <div class="nav-logo"><img src="logo.png" alt="Tiger Shark Logo"></div>
-    <button class="back-btn" onclick="showMainPage()">← Volver</button>
+    <div class="nav-right" style="display:flex;align-items:center;gap:10px;">
+        <button class="nav-activity-btn" onclick="showActivityPage()">🏆 Actividad</button>
+        <button class="hamburger-btn" id="hamburger-btn" onclick="toggleDrawer()"><span></span><span></span><span></span></button>
+    </div>
 </nav>
 
+<!-- Drawer -->
+<div class="mobile-drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
+<div class="mobile-drawer" id="mobile-drawer">
+    <button class="drawer-close" onclick="closeDrawer()">✕</button>
+    <ul class="drawer-nav-links">
+        <li><a href="#about" onclick="closeDrawer()"><span class="drawer-icon">🦈</span>Sobre Nosotros</a></li>
+        <li><a href="#benefits" onclick="closeDrawer()"><span class="drawer-icon">💰</span>Beneficios</a></li>
+        <li><a href="#agents" onclick="closeDrawer()"><span class="drawer-icon">👤</span>Agente</a></li>
+        <li><a href="#contact" onclick="closeDrawer()"><span class="drawer-icon">📬</span>Contacto</a></li>
+        <li><a href="#links" onclick="closeDrawer()"><span class="drawer-icon">🔗</span>Enlaces</a></li>
+        <li><a href="#recruit" onclick="closeDrawer()"><span class="drawer-icon">🚀</span>Únete</a></li>
+    </ul>
+    <button class="drawer-activity-btn" onclick="closeDrawer();showActivityPage();">🏆 Actividad</button>
+    <div class="drawer-divider"></div>
+</div>
+<nav id="nav-activity"><div class="nav-logo"><img src="logo.png" alt="Logo"></div><button class="back-btn" onclick="showMainPage()">← Volver</button></nav>
+    <nav id="nav-detail"><div class="nav-logo"><img src="logo.png" alt="Logo"></div><button class="back-btn" onclick="showMainPage()">← Volver</button></nav>
+<nav id="nav-protect"><div class="nav-logo"><img src="logo.png" alt="Logo"></div><button class="back-btn" onclick="showMainPage()">← Volver</button></nav>
+<nav id="nav-agent"><div class="nav-logo"><img src="logo.png" alt="Logo"></div><button class="back-btn" onclick="showMainPage()">← Volver</button></nav>
+<nav id="nav-industry"><div class="nav-logo"><img src="logo.png" alt="Logo"></div><button class="back-btn" onclick="showMainPage()">← Volver</button></nav>
+<nav id="nav-about"><div class="nav-logo"><img src="logo.png" alt="Logo"></div><button class="back-btn" onclick="showMainPage()">← Volver</button></nav>
 <!-- ════════════════════════════════════════ -->
 <!-- ════          主  页                ════ -->
 <!-- ════════════════════════════════════════ -->
@@ -1116,8 +1130,13 @@
 
     <section id="contact">
         <div class="section-header"><div class="section-tag">CONTACT</div><h2 class="section-title"><span>Contacto</span></h2><div class="section-divider"></div></div>
+        <!-- ✅ 联系方式改为可点击链接 -->
         <div class="contact-wrap">
-            <div class="contact-item"><div class="contact-icon">💬</div><div class="contact-info"><h4>WHATSAPP</h4><p>+852 5240 2056</p></div></div>
+            <a href="https://wa.me/85252402056" target="_blank" style="text-decoration:none" class="contact-item">
+                <div class="contact-icon">💬</div>
+                <div class="contact-info"><h4>WHATSAPP</h4><p>+852 5240 2056‬</p></div>
+            </a>
+           
             <div class="contact-item"><div class="contact-icon">🕐</div><div class="contact-info"><h4>HORARIO LABORAL</h4><p>Lunes a Sábado 09:00pm - 05:00pm</p></div></div>
             <div class="contact-item"><div class="contact-icon">🎵</div><div class="contact-info"><h4>TIKTOK</h4><p>@chad.tigershark_</p></div></div>
         </div>
@@ -1128,7 +1147,21 @@
         <div class="section-header"><div class="section-tag">OFFICIAL LINKS</div><h2 class="section-title">Enlaces <span>Oficiales</span></h2><div class="section-divider"></div></div>
         <div class="links-grid">
             <a href="https://www.tiktok.com/@tigershark_agencia" target="_blank" rel="noopener" class="link-card"><div class="link-left"><span class="link-icon">🎵</span><div><h4>TIKTOK</h4><p>@tigershark_agencia</p></div></div><span class="link-arrow">→</span></a>
-            <a href="https://wa.me/+852 6251 2763" target="_blank" rel="noopener" class="link-card"><div class="link-left"><span class="link-icon">💬</span><div><h4>Grupo Oficial de WhatsApp</h4><p>Obtén las últimas noticias</p></div></div><span class="link-arrow">→</span></a>
+            <a href="https://whatsapp.com/channel/0029VbCAqUvFnSz5vcpvjN19" target="_blank" rel="noopener" class="link-card"><div class="link-left"><span class="link-icon">💬</span><div><h4>Grupo Oficial de WhatsApp</h4><p>Obtén las últimas noticias</p></div></div><span class="link-arrow">→</span></a>
+        </div>
+    </section>
+    <div class="section-line"></div>
+ <section id="live-rules">
+        <div class="section-header">
+            <div class="section-tag">LIVE RULES</div>
+            <h2 class="section-title">TikTok <span>Reglas de LIVE</span></h2>
+            <div class="section-divider"></div>
+            <p style="margin-top:16px;color:rgba(224,247,250,0.55);font-size:.92rem;letter-spacing:1px;">Conoce las normas para proteger tu cuenta</p>
+        </div>
+        <div class="links-grid">
+            <a href="#" class="link-card"><div class="link-left"><span class="link-icon">📋</span><div><h4>Reglas Básicas de LIVE</h4><p>Conductas prohibidas y suspensiones</p></div></div><span class="link-arrow">→</span></a>
+            <a href="#" class="link-card"><div class="link-left"><span class="link-icon">🎁</span><div><h4>Reglas de Regalos</h4><p>Prohibición de regalos falsos</p></div></div><span class="link-arrow">→</span></a>
+            <a href="#" class="link-card"><div class="link-left"><span class="link-icon">🎓</span><div><h4>Guía de Formación</h4><p>Cómo mejorar tu rendimiento en LIVE</p></div></div><span class="link-arrow">→</span></a>
         </div>
     </section>
     <div class="section-line"></div>
@@ -1463,7 +1496,7 @@
         <div class="cta-box gold-cta">
             <h2>🏆 Únete al equipo campeón</h2>
             <p>Tiger Shark lidera la industria global del streaming en vivo.<br>Forma parte de la agencia más premiada por TikTok.</p>
-            <a href=https://www.tiktok.com/t/ZSMFhpDEA/" target="_blank" rel="noopener" class="cta-btn gold-btn hover-magnet">🚀 Únete Ahora</a>
+            <a href="https://www.tiktok.com/t/ZSMFhpDEA/" target="_blank" rel="noopener" class="cta-btn gold-btn hover-magnet">🚀 Únete Ahora</a>
         </div>
     </div>
     <footer><br><img src="logo.png" alt="Tiger Shark"><br>© 2024 Tiger Shark Agency · All Rights Reserved<br><br>Profesional · Integridad · Éxito Mutuo</footer>
@@ -1493,7 +1526,7 @@
                         <span class="video-label-dot"></span>
                         TIGER SHARK · OFFICIAL VIDEO
                     </div>
-                    <video id="about-video" autoplay muted controls playsinline preload="auto" class="about-video">
+                    <video id="about-video" muted controls playsinline preload="auto" class="about-video">
     <source src="videos/TK_web.mp4" type="video/mp4">
     Tu navegador no soporta la reproducción de video.
 </video>
@@ -1812,7 +1845,8 @@ function showActivityPage(){
     hideAll();
     document.getElementById('nav-activity').style.display='flex';
     const p = document.getElementById('activity-page');
-    p.classList.add('active','page-fade-in');
+    p.style.display='block';
+    p.classList.add('page-fade-in');
     window.scrollTo(0,0);
     setTimeout(()=>initActivityObserver(), 100);
 }
@@ -1911,35 +1945,64 @@ document.addEventListener('keydown',e=>{ if(!document.getElementById('lightbox')
 
 /* ── WebGL Aurora ── */
 const glCanvas = document.getElementById('glCanvas');
-const gl = glCanvas.getContext('webgl') || glCanvas.getContext('experimental-webgl');
+const gl = glCanvas.getContext('webgl') || glCanvas.getContext('experimental-webgl') || glCanvas.getContext('webgl2');
+// 强制设置画布尺寸（安卓必须）
 if(gl){
-    const vs=`attribute vec2 a;void main(){gl_Position=vec4(a,0.,1.);}`;
-    const fs=`
-        precision mediump float;
-        uniform vec2 R; uniform float T;
-        vec2 hash(vec2 p){p=vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3)));return -1.+2.*fract(sin(p)*43758.5453);}
-        float noise(vec2 p){
-            const float K1=0.366025,K2=0.211325;
-            vec2 i=floor(p+(p.x+p.y)*K1),a=p-i+(i.x+i.y)*K2;
-            vec2 o=(a.x>a.y)?vec2(1.,0.):vec2(0.,1.),b=a-o+K2,c=a-1.+2.*K2;
-            vec3 h=max(.5-vec3(dot(a,a),dot(b,b),dot(c,c)),0.);
-            return dot(h*h*h*h*vec3(dot(a,hash(i)),dot(b,hash(i+o)),dot(c,hash(i+1.))),vec3(70.));
-        }
-        float fbm(vec2 x){float v=0.,a=.5;vec2 s=vec2(100.);mat2 r=mat2(cos(.5),sin(.5),-sin(.5),cos(.5));for(int i=0;i<4;i++){v+=a*noise(x);x=r*x*2.+s;a*=.5;}return v;}
-        void main(){
-            vec2 uv=gl_FragCoord.xy/R; uv.x*=R.x/R.y;
-            float t=T*.25;
-            vec2 q=vec2(fbm(uv),fbm(uv+vec2(1.)));
-            vec2 r=vec2(fbm(uv+q+vec2(1.7,9.2)+.15*t),fbm(uv+q+vec2(8.3,2.8)+.126*t));
-            float f=fbm(uv+r);
-            vec3 col=mix(vec3(.02,.04,.06),vec3(0.,.42,.48),clamp(f*2.,0.,1.));
-            col=mix(col,vec3(0.,.9,1.)*.6,clamp(length(q),0.,1.));
-            col=mix(col,vec3(.6,.2,.8)*.3,clamp(abs(r.x),0.,1.));
-            float v=length(gl_FragCoord.xy/R-.5);
-            col*=1.4-v*1.0;
-            gl_FragColor=vec4(col,1.);
-        }
-    `;
+    glCanvas.width = window.innerWidth;
+    glCanvas.height = window.innerHeight;
+
+    const vs = ...
+    const fs = ...
+}
+precision mediump float;
+uniform vec2 R;
+uniform float T;
+
+vec2 hash(vec2 p){
+    p = vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3)));
+    return -1.0+2.0*fract(sin(p)*43758.5453);
+}
+
+float noise(vec2 p){
+    float K1=0.366025;
+    float K2=0.211325;
+    vec2 i=floor(p+(p.x+p.y)*K1);
+    vec2 a=p-i+(i.x+i.y)*K2;
+    vec2 o=(a.x>a.y)?vec2(1.0,0.0):vec2(0.0,1.0);
+    vec2 b=a-o+K2;
+    vec2 c=a-1.0+2.0*K2;
+    vec3 h=max(0.5-vec3(dot(a,a),dot(b,b),dot(c,c)),0.0);
+    return dot(h*h*h*h*vec3(dot(a,hash(i)),dot(b,hash(i+o)),dot(c,hash(i+1.0))),vec3(70.0));
+}
+
+float fbm(vec2 x){
+    float v=0.0;
+    float a=0.5;
+    vec2 s=vec2(100.0);
+    mat2 r=mat2(cos(0.5),sin(0.5),-sin(0.5),cos(0.5));
+    for(int i=0;i<4;i++){
+        v+=a*noise(x);
+        x=r*x*2.0+s;
+        a*=0.5;
+    }
+    return v;
+}
+
+void main(){
+    vec2 uv=gl_FragCoord.xy/R;
+    uv.x*=R.x/R.y;
+    float t=T*0.25;
+    vec2 q=vec2(fbm(uv),fbm(uv+vec2(1.0)));
+    vec2 r=vec2(fbm(uv+q+vec2(1.7,9.2)+0.15*t),fbm(uv+q+vec2(8.3,2.8)+0.126*t));
+    float f=fbm(uv+r);
+    vec3 col=mix(vec3(0.02,0.04,0.06),vec3(0.0,0.42,0.48),clamp(f*2.0,0.0,1.0));
+    col=mix(col,vec3(0.0,0.9,1.0)*0.6,clamp(length(q),0.0,1.0));
+    col=mix(col,vec3(0.6,0.2,0.8)*0.3,clamp(abs(r.x),0.0,1.0));
+    float v=length(gl_FragCoord.xy/R-0.5);
+    col*=1.4-v*1.0;
+    gl_FragColor=vec4(col,1.0);
+}
+`;
     function mkS(t,s){const sh=gl.createShader(t);gl.shaderSource(sh,s);gl.compileShader(sh);return sh;}
     const prog=gl.createProgram();
     gl.attachShader(prog,mkS(gl.VERTEX_SHADER,vs));
@@ -1950,17 +2013,21 @@ if(gl){
     const aLoc=gl.getAttribLocation(prog,'a');
     gl.enableVertexAttribArray(aLoc); gl.vertexAttribPointer(aLoc,2,gl.FLOAT,false,0,0);
     const tLoc=gl.getUniformLocation(prog,'T'), rLoc=gl.getUniformLocation(prog,'R');
-    (function render(ms){
-        if(glCanvas.width!==innerWidth||glCanvas.height!==innerHeight){
-            glCanvas.width=innerWidth; glCanvas.height=innerHeight;
-            gl.viewport(0,0,gl.drawingBufferWidth,gl.drawingBufferHeight);
-        }
-        gl.uniform1f(tLoc,ms*.001); gl.uniform2f(rLoc,glCanvas.width,glCanvas.height);
-        gl.drawArrays(gl.TRIANGLES,0,6);
-        requestAnimationFrame(render);
-    })(0);
+   (function render(ms){
+    // 强制更新尺寸（安卓兼容性）
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    if(glCanvas.width !== w || glCanvas.height !== h){
+        glCanvas.width = w;
+        glCanvas.height = h;
+        gl.viewport(0, 0, w, h); // 直接用真实尺寸，避免drawingBufferWidth兼容问题
+    }
+    gl.uniform1f(tLoc, ms * 0.001);
+    gl.uniform2f(rLoc, w, h); // 直接传真实尺寸
+    gl.drawArrays(gl.TRIANGLES, 0, 6);
+    requestAnimationFrame(render);
+})(0);
 }
-
 /* ── 入场观察器 ── */
 function applyObserver(sel){
     let delay=0,tid;
@@ -2007,6 +2074,25 @@ function initAdvanced3D(){
     });
 }
 setTimeout(initAdvanced3D,500);
+/* ══ Drawer ══ */
+let drawerStartX = 0;
+function toggleDrawer(){
+    const d=document.getElementById('mobile-drawer'),
+          o=document.getElementById('drawer-overlay'),
+          b=document.getElementById('hamburger-btn');
+    if(d.classList.contains('open')){ closeDrawer(); }
+    else { d.classList.add('open');o.classList.add('open');b.classList.add('active');document.body.style.overflow='hidden'; }
+}
+function closeDrawer(){
+    document.getElementById('mobile-drawer').classList.remove('open');
+    document.getElementById('drawer-overlay').classList.remove('open');
+    document.getElementById('hamburger-btn').classList.remove('active');
+    document.body.style.overflow='';
+}
+document.getElementById('mobile-drawer').addEventListener('touchstart',e=>{drawerStartX=e.touches[0].clientX;},{passive:true});
+document.getElementById('mobile-drawer').addEventListener('touchend',e=>{
+    if(e.changedTouches[0].clientX - drawerStartX > 60) closeDrawer();
+},{passive:true});
 
 /* ── 隐藏导航 ── */
 let lastY=0;
@@ -2045,33 +2131,8 @@ window.addEventListener('scroll',()=>{
         clearTimeout(waitTimer);
     });
 })();
-</script>
-    <script>
-/* ── 导航栏滚动隐藏/显示 ── */
-let lastScrollTop = 0;
-let isNavHidden = false;
 
-window.addEventListener('scroll', function() {
-    const nav = document.querySelector('nav');
-    if (!nav) return;
-    
-    let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-    
-    if (currentScroll > lastScrollTop && currentScroll > 50) {
-        if (!isNavHidden) {
-            nav.classList.add('nav-hidden');
-            isNavHidden = true;
-        }
-    }
-    else {
-        if (isNavHidden) {
-            nav.classList.remove('nav-hidden');
-            isNavHidden = false;
-        }
-    }
-    
-    lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
-}, false);
+
 </script>
 </body>
 </html>
